@@ -14,33 +14,33 @@ var client = new Twitter(keys.twitter);
 var argv = process.argv;
 var action = argv[2];
 
-var songOrMovie = "";
+var input = "";
 
 for (var i = 3; i < argv.length; i++) {
-  songOrMovie = songOrMovie + "+" + argv[i];
+  input = input + "+" + argv[i];
 }
 
 switch (action) {
   case "my-tweets":
-    showTweets();
+    Tweets();
     break;
   case "spotify-this-song":
-    showSong();
+    Song();
     break;
   case "movie-this":
-    showMovie();
+    Movie();
     break;
   case "do-what-it-says":
-    doIt();
+    Random();
     break;
   case undefined:
-    printInstr();
+    Directions();
 }
 
 // function definitions
 
-function showSong() {
-  if (songOrMovie === "") {
+function Song() {
+  if (input === "") {
     spotify.search({
       type: 'track',
       query: "The Sign"
@@ -59,7 +59,7 @@ function showSong() {
   } else {
     spotify.search({
       type: 'track',
-      query: songOrMovie
+      query: input
     }, function(err, data) {
       if (err) {
         return console.log("Error occurred: " + err);
@@ -75,7 +75,7 @@ function showSong() {
   };
 };
 
-function showTweets() {
+function Tweets() {
   client.get('statuses/user_timeline', {
     count: 20
   }, function(error, tweets) {
@@ -87,11 +87,11 @@ function showTweets() {
   });
 };
 
-function showMovie() {
-  if (songOrMovie === "") {
+function Movie() {
+  if (input === "") {
     var queryUrl = "http://www.omdbapi.com/?t=mr+nobody&y=&plot=short&apikey=trilogy";
   } else {
-    queryUrl = "http://www.omdbapi.com/?t=" + songOrMovie + "&y=&plot=short&apikey=trilogy";
+    queryUrl = "http://www.omdbapi.com/?t=" + input + "&y=&plot=short&apikey=trilogy";
   }
   // console.log(queryUrl);
   request(queryUrl, function(error, response, body) {
@@ -122,7 +122,7 @@ function showMovie() {
   });
 }
 
-function doIt() {
+function Random() {
   fs.readFile("random.txt", "utf8", function(error, data) {
     if (error) {
       return console.log(error);
@@ -130,7 +130,7 @@ function doIt() {
     var dataArr = data.split(",");
     console.log(dataArr);
     action = dataArr[0];
-    songOrMovie = dataArr[1];
+    input = dataArr[1];
     switch (action) {
       case "spotify-this-song":
         showSong();
@@ -142,12 +142,12 @@ function doIt() {
   });
 }
 
-function printInstr() {
+function Directions() {
   console.log("****** Use node.js to acess twitter, OMDB and spotify functions");
   console.log("****** Use keywords: 'movie-this <movie name here>', 'spotify-this-song <movie name here>', 'my-tweets', 'do-what-it-says' to get started!");
 }
 
-fs.appendFile("log.txt", action + songOrMovie + "\n", function(err) {
+fs.appendFile("log.txt", action + input + "\n", function(err) {
   if (err) {
     console.log(err);
   } else {

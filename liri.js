@@ -43,7 +43,7 @@ function showSong() {
   if (songOrMovie === "") {
     spotify.search({
       type: 'track',
-      query: "Reptilia"
+      query: "The Sign"
     }, function(err, data) {
       if (err) {
         return console.log("Error: " + err);
@@ -111,7 +111,7 @@ function showMovie() {
       } else {
         console.log("Rotten Tomatoes Rating: " + JSON.parse(body).Ratings[1].Value);
       }
-      console.log("Production Location: " + JSON.parse(body).Country);
+      console.log("Production Locations: " + JSON.parse(body).Country);
       console.log("Language: " + JSON.parse(body).Language);
       console.log("Plot: " + JSON.parse(body).Plot);
       console.log("Actors: " + JSON.parse(body).Actors);
@@ -144,7 +144,7 @@ function doIt() {
 
 function printInstr() {
   console.log("****** Use node.js to acess twitter, OMDB and spotify functions");
-  console.log("****** Use keywords: 'movie-this [enter movie name]', 'spotify-this-song [enter song name]', 'my-tweets', 'do-what-it-says' to get started!");
+  console.log("****** Use keywords: 'movie-this <movie name here>', 'spotify-this-song <movie name here>', 'my-tweets', 'do-what-it-says' to get started!");
 }
 
 fs.appendFile("log.txt", action + songOrMovie + "\n", function(err) {
